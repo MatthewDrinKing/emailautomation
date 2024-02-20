@@ -16,7 +16,7 @@ msg.attach(MIMEText(body, 'plain'))
 smtp_server = 'mail.drinking.co.uk'
 smtp_port = 465  # For SSL use 465, for TLS/STARTTLS use 587
 username = 'barnabas@drinking.co.uk'
-password = '_y8}Y1Fmsior'
+password = ''
 
 # Send email
 # Send email using SSL
