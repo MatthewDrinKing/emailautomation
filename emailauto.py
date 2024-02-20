@@ -18,8 +18,8 @@ def send_email(recipient_email, subject, body):
     msg.attach(MIMEText(body, 'plain'))
     
     try:
-        server = smtplib.SMTP(email_config['smtp_server'], email_config['smtp_port'])
-        server.starttls()
+        # Use SMTP_SSL for an SSL connection from the start
+        server = smtplib.SMTP_SSL(email_config['smtp_server'], email_config['smtp_port'])
         server.login(email_config['smtp_user'], email_config['smtp_password'])
         server.sendmail(email_config['smtp_user'], recipient_email, msg.as_string())
         server.quit()
