@@ -1,0 +1,10 @@
+{
+    "VC": {
+      "subject": "Opportunity for Venture Capitalists",
+      "message": "Hi [name],\n\nWe're excited to share a new opportunity with you that aligns with your interests in [company]. Please let us know if you would like more information.\n\nBest,\nThe Team"
+    },
+    "Angel Investor": {
+      "subject": "Exclusive Investment Opportunity",
+      "message": "Dear [name],\n\nWe believe we have an opportunity that matches your investment profile, particularly in startups like [company]. We're eager to discuss this further with you.\n\nWarm regards,\nThe Team"
+    }
+  }

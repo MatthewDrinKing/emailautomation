@@ -9,6 +9,15 @@ with open('config.json', 'r') as config_file:
     config = json.load(config_file)
 email_config = config['email']
 
+# Load email templates
+with open('templates.json', 'r') as template_file:
+    templates = json.load(template_file)
+
+# Function to customize email message
+def customize_message(template, name, company):
+    message = template.replace("[name]", name).replace("[company]", company)
+    return message
+
 # Function to send email
 def send_email(recipient_email, subject, body):
     msg = MIMEMultipart()
@@ -18,7 +27,6 @@ def send_email(recipient_email, subject, body):
     msg.attach(MIMEText(body, 'plain'))
     
     try:
-        # Use SMTP_SSL for an SSL connection from the start
         server = smtplib.SMTP_SSL(email_config['smtp_server'], email_config['smtp_port'])
         server.login(email_config['smtp_user'], email_config['smtp_password'])
         server.sendmail(email_config['smtp_user'], recipient_email, msg.as_string())
@@ -32,12 +40,17 @@ def main():
     conn = sqlite3.connect('contacts.db')
     cursor = conn.cursor()
     
-    cursor.execute("SELECT email FROM contacts WHERE emailsent = 0")
+    cursor.execute("SELECT email, name, company, emailtype FROM contacts WHERE emailsent = 0")
     contacts = cursor.fetchall()
     
     for contact in contacts:
-        email = contact[0]
-        send_email(email, "Your Subject Here", "Your email body here.")
+        email, name, company, emailtype = contact
+        template = templates.get(emailtype, {})
+        subject = template.get("subject", "No Subject")
+        message_template = template.get("message", "")
+        body = customize_message(message_template, name, company)
+        
+        send_email(email, subject, body)
         
         # Update the 'emailsent' status
         cursor.execute("UPDATE contacts SET emailsent = 1 WHERE email = ?", (email,))
